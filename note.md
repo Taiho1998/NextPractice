@@ -17,7 +17,7 @@ page.tsx 내에는 export default function이 필수이며, 함수명은 아무�
 layout.tsx 파일은 하나만 있는 게 아닌 여러 개 생성할 수 있으며, 각 폴더 마다 레이아웃을 지정할 수 있음
 
 - 별도로 지정된 layout의 경우 해당 디렉토리의 하위 디렉토리까지도 적용됨
-- 레이아웃은 서로 상쇄되지 않으며, 중첩됨
+- (중요!) 레이아웃은 서로 상쇄되지 않으며, 중첩됨
 
 # not-found.tsx
 
@@ -68,3 +68,50 @@ Dehydrated = 건조한
 - Hydrate의 대상이 되는 컴포넌트는 "use client"라는 지시어가 포함된 컴포넌트 뿐임
 
 따라서 "use client" = 백엔드에서 render되고 프론트엔드에서 hydrate & interactive됨 - 반대로 "use client"가 없으면 사용자가 이 컴포넌트를 다운받지 않음 = 다운받을 필요가 없는 컴포넌트에 대한 메모리 낭비가 없음
+
+# Route group
+
+Route를 그룹화 하여 logical group화 하는 것
+
+- 괄호 폴더를 생성할 경우 URL에 전혀 영향을 미치지 않음
+- app 하위에 (home)은 {base-url}/home이 아닌 여전히 {base-url}/ 로 되어있음
+- layout과 not-found는 일반적으로 모든 페이지에서 사용되므로 app 하위에 그대로 유지됨
+  => 디렉토리 구조를 깔끔하게 정리한 채 컴포넌트를 묶을 수 있음
+
+예시) BaroFarm 프로젝트에서 user, market, board 등의 디렉토리로 묶은 컴포넌트들은 React에서는 route.js에서 정리했기 때문에 해당 파일에서 정리한 반면, next에서는 무조건 디렉토리 이름 = url임. 따라서 디렉토리 이름이 url에 포함되지 않길 바랄 경우 = user/login, user/signin이 아닌 /login, /signin 이렇게 만들고 싶은 경우 그룹화 하여 정리할 수 있음
+
+# Meta Data
+
+React에서의 메타데이터와 역할은 동일
+
+- layout과 비슷하게 여러 개가 존재할 경우 서로 상쇄되지 않으며, 정확히는 여러 개의 메타 데이터가 존재할 경우 병합됨
+- 메타 데이터는 서버 컴포넌트에만 있을 수 있으며, 클라이언트 컴포넌트에는 존재할 수 없음 = use client 금지
+  - Page와 Layout에만 메타데이터를 export할 수 있음
+  - 예를 들어 왼쪽의 about-us, (home) 등의 page와 layout, not-found는 메타데이터를 export할 수 있음
+  - 하지만 components 내의 navigation처럼 use client를 사용하여 클라은 메타 데이터를 export할 수 없음
+- next의 MetaData를 이용하여 템플릿화 할 수 있음
+
+app/layout.tsx
+
+```
+export const metadata: Metadata = {
+title: {
+template: "%s | Next Movies",
+default: "Loading...",
+},
+description: "The best movies on the best framework",
+};
+```
+
+(home)/page.tsx
+
+```
+export const metadata = {
+  title: "Home",
+};
+
+```
+
+이런 식으로 app의 layout의 metadata에 타입처럼 Metadata를 부여하고 다른 페이지에서 타이틀을 부여함으로써써 템플릿화 하여 사용 가능함. 메타 데이터가 설정되지 않을 경우 default가 출력됨.
+
+- 다만 Type을 부여하는 과정은 Typescript 한정이며, Javascript로 이용할 경우 Metadata 타입을 부여할 필요 없음
