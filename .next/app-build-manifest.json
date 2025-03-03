@@ -29,6 +29,11 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/about-us/layout.js"
+    ],
+    "/about-us/company/jobs/sales/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/about-us/company/jobs/sales/page.js"
     ]
   }
 }
