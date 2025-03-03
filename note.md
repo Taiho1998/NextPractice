@@ -17,6 +17,7 @@ page.tsx 내에는 export default function이 필수이며, 함수명은 아무�
 layout.tsx 파일은 하나만 있는 게 아닌 여러 개 생성할 수 있으며, 각 폴더 마다 레이아웃을 지정할 수 있음
 
 - 별도로 지정된 layout의 경우 해당 디렉토리의 하위 디렉토리까지도 적용됨
+- 레이아웃은 서로 상쇄되지 않으며, 중첩됨
 
 # not-found.tsx
 
