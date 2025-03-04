@@ -115,3 +115,13 @@ export const metadata = {
 이런 식으로 app의 layout의 metadata에 타입처럼 Metadata를 부여하고 다른 페이지에서 타이틀을 부여함으로써써 템플릿화 하여 사용 가능함. 메타 데이터가 설정되지 않을 경우 default가 출력됨.
 
 - 다만 Type을 부여하는 과정은 Typescript 한정이며, Javascript로 이용할 경우 Metadata 타입을 부여할 필요 없음
+
+# Dynamic route
+
+동적 루트. 리액트 라우터에서 /product/:id 이런 식으로 처리했던 루트임.
+
+이를 next.js를 활용해 파일 시스템으로 만드려면 하위 디렉토리로 [id] 이런 식으로 중괄호를 붙여 폴더를 생성하고 그 안에 page.tsx를 생성해야 함
+
+{base-url}/product/12343132 이런식으로 만들어진 페이지에 전달되는 props를 확인하면 params:{id: 1234132}와 searchParams:{} 가 전달됨.
+
+이를 활용하여 데이터를 받아오거나 검색 기능을 제작 가능함
