@@ -1,6 +1,0 @@
-{
-  "/(home)/page": "app/(home)/page.js",
-  "/_not-found/page": "app/_not-found/page.js",
-  "/about-us/company/jobs/sales/page": "app/about-us/company/jobs/sales/page.js",
-  "/about-us/page": "app/about-us/page.js"
-}
