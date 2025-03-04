@@ -125,3 +125,46 @@ export const metadata = {
 {base-url}/product/12343132 이런식으로 만들어진 페이지에 전달되는 props를 확인하면 params:{id: 1234132}와 searchParams:{} 가 전달됨.
 
 이를 활용하여 데이터를 받아오거나 검색 기능을 제작 가능함
+
+만약 id가 아닌 다른 이름의 변수로 받고싶다면 디렉토리 명을 [number]든 [prod]든 다르게만 지으면 됨
+
+# Data Fetching
+
+next.js는 server side rendering이다. 따라서 use client나 useState, useEffect를 사용하지 않고도 api로부터 data를 fetch하는 것이 가능함
+= 프론트엔드에서 데이터를 요청했던 React와 달리, 백엔드에서 요청함
+
+- 또, next.js는 프레임워크이기에 server component를 사용할 경우 fetch된 url을 캐싱해줌
+  - 네트워크 탭을 통해 확인할 경우 use client를 이용하거나 react를 이용할 때와는 달리 이용한 api와 관련된 항목이 전혀 없음
+
+# Loading Component
+
+Data Fetching을 할 때 로딩이 오래 걸릴 경우 백엔드에서 렌더링을 진행하는 next.js 특성상 데이터 로딩이 완료될 때까지 어떤 UI도 렌더링 되지 않음
+
+이 문제를 해결하기 위해 로딩 컴포넌트를 추가하고자 하는 page.tsx 파일 아래에 loading.tsx를 추가해 로딩 컴포넌트를 추가할 경우 별도의 지시어나 라이브러리 없이 바로 로딩 페이지가 렌더링됨
+
+# Parallel Request
+
+두 가지 요청을 보낼 때 각각 따로 요청하면 요청 1 + 요청 2 의 시간이 걸려 결과적으로 로딩 시간이 길어짐
+
+따라서 const [movie, videos] = await Promise.all([getMovie(id), getVideos(id)]); 이런 식으로 두 요청을 병렬적으로 처리하면 로딩 시간을 아낄 수 있음
+
+다만 이 경우에는 두 요청이 동시에 시작하지만, 동시에 끝나지는 않음. 하지만 두 요청이 전부 끝나기 전까지 UI는 렌더링 되지 않음
+
+따라서 두 요청을 분리해야 함
+
+이를 위해 사용하는 React 태그 = Suspense
+
+<Suspense fallback={<h1>Loading Movie videos</h1>}>
+<MovieVideos id={id} />
+</Suspense>
+<Suspense fallback={<h1>Loading Movie info</h1>}>
+<MovieInfo id={id} />
+</Suspense>
+
+이런 식으로 다른 컴포넌트로 요청을 뺀 뒤, 이 컴포넌트를 suspense로 감싸는 방법이 있음
+
+- fallback은 로딩 중에 표시할 내용을 입력하면 됨
+
+위의 Loading 컴포넌트는 전체 페이지를 로딩 컴포넌트로 바꾸는 거라면, Suspense는 필요한 부분만 Loading 컴포넌트로 바꿔 사용자에게 최소한의 UI를 제공함
+
+- 최적화용으로 사용 가능할 것 같음
