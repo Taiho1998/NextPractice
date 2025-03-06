@@ -1,7 +1,5 @@
 import style from "../../styles/movie-info.module.css";
-
-export const API_URL: string =
-  "https://nomad-movies.nomadcoders.workers.dev/movies";
+import { API_URL } from "../constants";
 
 export async function getMovie(id: string) {
   const response = await fetch(`${API_URL}/${id}`);
