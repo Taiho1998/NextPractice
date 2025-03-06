@@ -1,4 +1,5 @@
-import { API_URL } from "../(home)/page";
+export const API_URL: string =
+  "https://nomad-movies.nomadcoders.workers.dev/movies";
 
 async function getMovie(id: string) {
   //   console.log(`Fetching movies: ${Date.now()}`);
