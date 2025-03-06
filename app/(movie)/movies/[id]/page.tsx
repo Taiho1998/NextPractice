@@ -2,13 +2,14 @@ import { Suspense } from "react";
 import MovieInfo from "../../../components/movie-info";
 import MovieVideos from "../../../components/movie-videos";
 
-export default function MovieDetail({
-  params: { id },
-}: {
+interface MovieDetailProps {
   params: {
     id: string;
   };
-}) {
+}
+
+export default function MovieDetail({ params }: MovieDetailProps) {
+  const { id } = params;
   return (
     <div>
       <h3>Movie Detail Page</h3>
